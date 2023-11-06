@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:15
+    container_name: quoradb
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: quoradb
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+
+  backend:
+    build: ./Quora_backend
+    container_name: quorabackend
+    env_file:
+      - ./Quora_backend/.env
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: quorafrontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
