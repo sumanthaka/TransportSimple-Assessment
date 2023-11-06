@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-ah%=m!d8h4n=^#zu0^jwv2%0c4j0+qzrw%^jycytxl5%+g=+*1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split()
+
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3001", "http://localhost:3000", "http://localhost:8000"]
+
+CORS_ALLOWED_ORIGINS = ["http://localhost:3001", "http://localhost:3000", "http://localhost:8000"]
 
 
 # Application definition
@@ -39,18 +43,30 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'posts.apps.PostsConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ]
+}
 
 ROOT_URLCONF = 'Quora.urls'
 

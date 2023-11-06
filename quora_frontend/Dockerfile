@@ -1,6 +1,6 @@
 FROM node:18-alpine AS builder
 
-WORKDIR /usr/src/interview_frontend
+WORKDIR /usr/src/quora_frontend
 
 COPY package*.json ./
 
@@ -10,7 +10,7 @@ COPY . .
 
 RUN npx next build
 
-# Stage 2
+# # Stage 2
 FROM node:18-alpine
 
 WORKDIR /usr/src/quora_frontend

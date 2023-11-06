@@ -3,10 +3,9 @@ version: '3'
 services:
   db:
     image: postgres:15
-    container_name: quoradb
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
       POSTGRES_DB: quoradb
     volumes:
       - db_data:/var/lib/postgresql/data/
@@ -23,7 +22,7 @@ services:
       - db
 
   frontend:
-    build: ./frontend
+    build: ./quora_frontend
     container_name: quorafrontend
     ports:
       - "3000:3000"
