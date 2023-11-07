@@ -5,6 +5,10 @@ import axios from 'axios'
 
 export default function Home() {
   const [page, setPage] = useState('')
+  const [loginData, setLoginData] = useState({
+    username: "",
+    password: ""
+  });
   const loginpage = useRef()
   const registerpage = useRef()
 
@@ -22,29 +26,41 @@ export default function Home() {
     }
   }, [page])
 
-  function createUser() {
+  async function createUser() {
     let data = {
-      'username': document.getElementById('username').value,
-      'email': document.getElementById('email').value,
-      'password': document.getElementById('password').value,
-      'confirm_password': document.getElementById('confirmPassword').value,
+      username: document.getElementById('username').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('password').value,
+      confirm_password: document.getElementById('confirmPassword').value,
     }
     console.log(data)
-    client.post('api/register/', JSON.stringify(data), {'headers': {'Content-Type': 'application/json'}})
+    await client.post('api/register/', JSON.stringify(data), {'headers': {'Content-Type': 'application/json'}})
   }
 
-  function loginUser() {
-    let data = {
-      'username': document.getElementById('loginUsername').value,
-      'password': document.getElementById('loginPassword').value,
-    }
-    client.post('api/login/', JSON.stringify(data), {'headers': {'Content-Type': 'application/json'}})
-    .then((response) => {
-      console.log(response)
-      localStorage.setItem('token', response.data.token)
-    })
-    client.get('api/questions/').then((response) => {console.log(response)})
+  async function apiRequest(data) 
+  {
+    await client.post('api/login/', JSON.stringify(data), {'headers': {'Content-Type': 'application/json'}})
   }
+
+
+  const loginUser = (e) => {
+    e.preventDefault();
+    const userData = {
+      username: loginData.username,
+      password: loginData.password
+    };
+    axios.post("http://localhost:8000/api/login/", userData).then((response) => {
+      console.log(response.status, response.data);
+    });
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setLoginData({
+      ...loginData,
+      [e.target.name]: value
+    });
+  };
 
   return (
       <div className="login-page">
@@ -58,8 +74,8 @@ export default function Home() {
             <p className="message">Already registered? <a onClick={()=>{setPage('login')}}>Sign In</a></p>
           </form>
           <form id="login" className="login-form" ref={loginpage} onSubmit={loginUser}>
-            <input type="text" placeholder="username" id='loginUsername' />
-            <input type="password" placeholder="password" id='loginPassword'/>
+            <input type="text" placeholder="username" id='loginUsername' name='username' value={loginData.username} onChange={handleChange} />
+            <input type="password" placeholder="password" id='loginPassword' name='password' value={loginData.password} onChange={handleChange}/>
             <button>login</button>
             <p className="message">Not registered? <a onClick={()=>{setPage('register')}}>Create an account</a></p>
           </form>
