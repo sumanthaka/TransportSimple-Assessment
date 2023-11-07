@@ -36,12 +36,13 @@ const Page = () => {
                 {questions.map((question, index) => {
                     console.log(question)
                     return(
-                        <div className="max-w-sm rounded overflow-hidden shadow-lg m-4" key={index} onClick={()=> {questionRedirect(question.id)}} >
-                            <div className="px-6 py-4">
-                                <div className="font-bold text-xl mb-2"></div>
-                                <p className="text-gray-700 text-base">
-                                    {question.question_text}
-                                </p>
+                        <div className='flex justify-center w-full px-20'>
+                            <div className="w-full rounded overflow-hidden shadow-lg m-4" key={index} onClick={()=> {questionRedirect(question.id)}} >
+                                <div className="px-6 py-4">
+                                    <p className="text-gray-700 text-base text-center cursor-pointer">
+                                        {question.question_text}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     )

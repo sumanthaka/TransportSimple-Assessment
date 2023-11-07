@@ -1,6 +1,8 @@
 import React from "react"
 import client from "../API/api"
 import { useRouter } from "next/navigation"
+import like from '@/assets/like.png'
+import Image from "next/image"
 
 const Like = ({ liked, answer_id, onClick }) => {
 
@@ -18,7 +20,7 @@ const Like = ({ liked, answer_id, onClick }) => {
             <i
             onClick={() => sendLike(answer_id)}
             style={{ cursor: "pointer" }}
-            >Like</i>
+            ><Image src={like} className="w-5" /></i>
         </>
     )
 }

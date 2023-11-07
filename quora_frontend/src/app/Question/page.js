@@ -100,24 +100,32 @@ const Page = () => {
     return (
         <>
             <Navbar />
-            <div>
-                {question.question_text}
-                <div>
-                    {answered ? <div></div> : 
-                    <form onSubmit={submitAnswer}>
-                        <textarea className="border-2 border-gray-300 p-2 m-2" placeholder="Answer" />
-                        <button type='submit' className="border-2 border-gray-300 p-2 m-2">Submit</button>
-                    </form>}
-                </div>
-                <div>
-                    {answers.map((answer, index) => {
-                        return (
-                            <div key={answer.id}>
-                                {answer.answer_text}
-                                <p>{likedStatus[index] ? <LikeCount answer_id={answer.id} /> : <Like answer_id={answer.id} question_id={question_id} onClick={refreshPage} />}</p>
+            <div className='flex justify-center'>
+                <div className='w-full h-full'>
+                    <div className='flex justify-center'>
+                        <p className='mt-4'>{question.question_text}</p>
+                    </div>
+                    <div>
+                        {answered ? <div></div> : 
+                        <form onSubmit={submitAnswer}>
+                            <div className='flex justify-center mx-10'>
+                                <textarea className="mt-4 border-2 p-2 w-full rounded-md" placeholder="Answer" />
                             </div>
-                        );
-                    })}
+                            <div className='flex justify-center mt-2'>
+                                <button type='submit' className="border-2 p-2 border-red-500 text-white bg-red-600 rounded-md">Submit</button>
+                            </div>
+                        </form>}
+                    </div>
+                    <div className='border-2 px-6 py-2 m-2'>
+                        {answers.map((answer, index) => {
+                            return (
+                                <div key={answer.id} className='border-y-2'>
+                                    {answer.answer_text}
+                                    <p>{likedStatus[index] ? <LikeCount answer_id={answer.id} /> : <Like answer_id={answer.id} question_id={question_id} onClick={refreshPage} />}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </>

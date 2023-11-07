@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
+import Navbar from './Components/Navbar'
 
 export default function Home() {
   const router = useRouter()
@@ -63,6 +64,7 @@ export default function Home() {
     axios.post("http://localhost:8000/api/register/", userData).then((response) => {
       console.log(response.status, response.data);
     });
+    setPage('login')
   }
 
   const handleChange = (e) => {
@@ -82,23 +84,26 @@ export default function Home() {
   }
 
   return (
-      <div className="login-page">
-        <div className="form" >
-          <form id="register" className="hidden" ref={registerpage} onSubmit={registerUser}>
-            <input type="text" placeholder="name" id='username' name='username' value={registerData.username} onChange={handleRegisterChange} />
-            <input type="email" placeholder="email address" id='email' name='email' value={registerData.email} onChange={handleRegisterChange} />
-            <input type="password" placeholder="password" id='password' name='password' value={registerData.password} onChange={handleRegisterChange} />
-            <input type="password" placeholder="confirm password" id='confirmPassword' name='confirm_password' value={registerData.confirmPassword} onChange={handleRegisterChange} />
-            <button type='submit'>create</button>
-            <p className="message">Already registered? <a onClick={()=>{setPage('login')}}>Sign In</a></p>
-          </form>
-          <form id="login" className="login-form" ref={loginpage} onSubmit={loginUser}>
-            <input type="text" placeholder="username" id='loginUsername' name='username' value={loginData.username} onChange={handleChange} />
-            <input type="password" placeholder="password" id='loginPassword' name='password' value={loginData.password} onChange={handleChange}/>
-            <button>login</button>
-            <p className="message">Not registered? <a onClick={()=>{setPage('register')}}>Create an account</a></p>
-          </form>
+      <>
+        <div className="login-page">
+          <div className="form" >
+            <form id="register" className="hidden" ref={registerpage} onSubmit={registerUser}>
+              <input type="text" placeholder="name" id='username' name='username' value={registerData.username} onChange={handleRegisterChange} />
+              <input type="email" placeholder="email address" id='email' name='email' value={registerData.email} onChange={handleRegisterChange} />
+              <input type="password" placeholder="password" id='password' name='password' value={registerData.password} onChange={handleRegisterChange} />
+              <input type="password" placeholder="confirm password" id='confirmPassword' name='confirm_password' value={registerData.confirmPassword} onChange={handleRegisterChange} />
+              <button type='submit' className='bg-red-600 hover:bg-red-700 text-white'>create</button>
+              <p className="message">Already registered? <a className='text-red-600 hover:text-red-700 cursor-pointer' onClick={()=>{setPage('login')}}>Sign In</a></p>
+            </form>
+            <form id="login" className="login-form" ref={loginpage} onSubmit={loginUser}>
+              <input type="text" placeholder="username" id='loginUsername' name='username' value={loginData.username} onChange={handleChange} />
+              <input type="password" placeholder="password" id='loginPassword' name='password' value={loginData.password} onChange={handleChange}/>
+              <button className='bg-red-600 hover:bg-red-700 text-white'>login</button>
+              <p className="message">Not registered? <a className='text-red-600 hover:text-red-700 cursor-pointer' onClick={()=>{setPage('register')}}>Create an account</a></p>
+            </form>
+          </div>
         </div>
-      </div>
+      </>
   )
 }
+

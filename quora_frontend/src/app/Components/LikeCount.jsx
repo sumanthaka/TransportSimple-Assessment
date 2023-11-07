@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react"
 import client from "../API/api"
 import { useRouter } from "next/navigation"
+import like from '@/assets/like.png'
+import Image from "next/image"
 
 const LikeCount = ({ answer_id }) => {
 
@@ -23,7 +25,7 @@ const LikeCount = ({ answer_id }) => {
 
     return (
         <div>
-            <p>Like Count: {likeCount}</p>
+            <div className="flex"><Image src={like} className="w-5 mr-1"/> <p>Count: {likeCount}</p></div>
         </div>
     )
 }

@@ -25,10 +25,11 @@ const Page = () => {
     return (
         <>
             <Navbar />
-            <div className="">
+            <div className="mx-10 my-2">
+                <div className="text-3xl font-bold text-center m-4">Post a Question</div>
                 <form onSubmit={postQuestion}>
                     <textarea className="w-full h-64 border-2 border-gray-300 p-2 rounded-md" placeholder="What is your question or link?" />
-                    <div className="flex justify-between">
+                    <div className="flex justify-center mt-5">
                         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Post</button>
                     </div>
                 </form>
