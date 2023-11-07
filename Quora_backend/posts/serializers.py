@@ -7,7 +7,7 @@ from .models import Question, Answer, Like
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = "__all__"
+        fields = ['question_text', 'id']
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -19,7 +19,7 @@ class AnswerSerializer(serializers.ModelSerializer):
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
-        fields = "__all__"
+        fields = ['answer']
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):

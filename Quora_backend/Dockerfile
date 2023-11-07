@@ -7,7 +7,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Install system dependencies
 RUN apt-get update \
-    && apt-get install -y netcat-traditional \
+    && apt-get install -y netcat \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -27,6 +27,8 @@ RUN sed -i 's/\r$//g' /usr/src/backend/entrypoint.sh \
 
 # Copy project
 COPY . .
+
+EXPOSE 8000
 
 # Run entrypoint.sh
 ENTRYPOINT ["/usr/src/backend/entrypoint.sh"]
