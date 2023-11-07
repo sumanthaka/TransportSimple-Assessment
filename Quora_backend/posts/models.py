@@ -27,6 +27,6 @@ class Answer(models.Model):
 
 class Like(models.Model):
     answer = models.ForeignKey(Answer, related_name='likes', on_delete=models.CASCADE)
-    user = models.OneToOneField(User, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 

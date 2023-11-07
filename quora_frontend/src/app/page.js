@@ -2,12 +2,20 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+  const router = useRouter()
   const [page, setPage] = useState('')
   const [loginData, setLoginData] = useState({
     username: "",
     password: ""
+  });
+  const [registerData, setRegisterData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: ""
   });
   const loginpage = useRef()
   const registerpage = useRef()
@@ -15,6 +23,12 @@ export default function Home() {
   const client = axios.create({
       baseURL: 'http://localhost:8000',
   })
+
+  useEffect(() => {
+    if(localStorage.getItem('access_token')) {
+      router.push("/Blog")
+    }
+  }, [])
 
   useEffect(() => {
     if(page=="register") {
@@ -26,33 +40,30 @@ export default function Home() {
     }
   }, [page])
 
-  async function createUser() {
-    let data = {
-      username: document.getElementById('username').value,
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value,
-      confirm_password: document.getElementById('confirmPassword').value,
-    }
-    console.log(data)
-    await client.post('api/register/', JSON.stringify(data), {'headers': {'Content-Type': 'application/json'}})
-  }
-
-  async function apiRequest(data) 
-  {
-    await client.post('api/login/', JSON.stringify(data), {'headers': {'Content-Type': 'application/json'}})
-  }
-
-
-  const loginUser = (e) => {
+  const loginUser = async (e) => {
     e.preventDefault();
     const userData = {
       username: loginData.username,
       password: loginData.password
     };
-    axios.post("http://localhost:8000/api/login/", userData).then((response) => {
+    await axios.post("http://localhost:8000/api/login/", userData).then((response) => {
+      localStorage.setItem("access_token", response.data.token)
+    });
+    router.push("/Blog")
+  };
+
+  const registerUser = (e) => {
+    e.preventDefault();
+    const userData = {
+      username: registerData.username,
+      email: registerData.email,
+      password: registerData.password,
+      confirm_password: registerData.confirmPassword
+    };
+    axios.post("http://localhost:8000/api/register/", userData).then((response) => {
       console.log(response.status, response.data);
     });
-  };
+  }
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -62,14 +73,22 @@ export default function Home() {
     });
   };
 
+  const handleRegisterChange = (e) => {
+    const value = e.target.value;
+    setRegisterData({
+      ...registerData,
+      [e.target.id]: value
+    });
+  }
+
   return (
       <div className="login-page">
         <div className="form" >
-          <form id="register" className="hidden" ref={registerpage} onSubmit={createUser}>
-            <input type="text" placeholder="name" id='username' />
-            <input type="email" placeholder="email address" id='email' />
-            <input type="password" placeholder="password" id='password' />
-            <input type="password" placeholder="confirm password" id='confirmPassword' />
+          <form id="register" className="hidden" ref={registerpage} onSubmit={registerUser}>
+            <input type="text" placeholder="name" id='username' name='username' value={registerData.username} onChange={handleRegisterChange} />
+            <input type="email" placeholder="email address" id='email' name='email' value={registerData.email} onChange={handleRegisterChange} />
+            <input type="password" placeholder="password" id='password' name='password' value={registerData.password} onChange={handleRegisterChange} />
+            <input type="password" placeholder="confirm password" id='confirmPassword' name='confirm_password' value={registerData.confirmPassword} onChange={handleRegisterChange} />
             <button type='submit'>create</button>
             <p className="message">Already registered? <a onClick={()=>{setPage('login')}}>Sign In</a></p>
           </form>
